@@ -430,7 +430,7 @@ export default class DatePicker extends React.Component {
       this.props.strictParsing
     );
     if (date || !event.target.value) {
-      this.setSelected(date, event, true);
+      this.setSelected(date, event, true, false);
     }
   };
 
@@ -444,7 +444,7 @@ export default class DatePicker extends React.Component {
       );
       return this.preventFocusTimeout;
     });
-    this.setSelected(date, event, undefined, monthSelectedIn);
+    this.setSelected(date, event, undefined, monthSelectedIn, true);
     if (!this.props.shouldCloseOnSelect || this.props.showTimeSelect) {
       this.setPreSelection(date);
     } else if (!this.props.inline) {
@@ -452,7 +452,7 @@ export default class DatePicker extends React.Component {
     }
   };
 
-  setSelected = (date, event, keepInput, monthSelectedIn) => {
+  setSelected = (date, event, keepInput, monthSelectedIn, triggerOnSelect) => {
     let changedDate = date;
 
     if (changedDate !== null && isDayDisabled(changedDate, this.props)) {
@@ -486,7 +486,7 @@ export default class DatePicker extends React.Component {
       this.props.onChange(changedDate, event);
     }
 
-    this.props.onSelect(changedDate, event);
+    triggerOnSelect && this.props.onSelect(changedDate, event);
 
     if (!keepInput) {
       this.setState({ inputValue: null });
